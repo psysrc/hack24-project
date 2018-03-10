@@ -1,5 +1,6 @@
 package nagg
 
+import com.calendarfx.model.CalendarEvent
 import com.calendarfx.model.Entry
 import com.calendarfx.model.Interval
 import com.calendarfx.view.AllDayView
@@ -13,6 +14,8 @@ import java.text.MessageFormat
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.ZonedDateTime
+
+import static com.calendarfx.model.CalendarEvent.CALENDAR_CHANGED
 
 class NaggingCalendarView extends CalendarView{
 
@@ -43,15 +46,29 @@ class NaggingCalendarView extends CalendarView{
                 entry.setFullDay(true);
             }
 
-            events.add(entry)
+            Entry<Object> entry2 = new Entry<>(MessageFormat.format(Messages.getString("DateControl.DEFAULT_ENTRY_TITLE"), entryCounter++)); //$NON-NLS-1$
+            Interval interval2 = new Interval(time.toLocalDateTime(), time.toLocalDateTime().plusHours(1));
+            entry.setInterval(interval2);
+
+            if (control instanceof AllDayView) {
+                entry.setFullDay(true);
+            }
+
+            events.add(entry2)
 
             new Alert(Alert.AlertType.INFORMATION).showAndWait()
 
-            println events
-
+//            println events
+            addLastEvent()
 
             return entry
         }
+    }
+
+    def addLastEvent(){
+        def cal = calendars.first()
+        cal.addEntry(events.last())
+        cal.fireEvent(new CalendarEvent(CALENDAR_CHANGED, cal))
     }
 
 
