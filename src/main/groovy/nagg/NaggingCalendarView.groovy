@@ -1,9 +1,7 @@
 package nagg
 
-import com.calendarfx.model.CalendarEvent
 import com.calendarfx.model.Entry
 import com.calendarfx.model.Interval
-import com.calendarfx.view.AllDayView
 import com.calendarfx.view.CalendarView
 import com.calendarfx.view.DateControl
 import com.calendarfx.view.Messages
@@ -11,11 +9,7 @@ import com.calendarfx.view.VirtualGrid
 import javafx.scene.control.Alert
 
 import java.text.MessageFormat
-import java.time.DayOfWeek
-import java.time.Duration
-import java.time.ZonedDateTime
-
-import static com.calendarfx.model.CalendarEvent.CALENDAR_CHANGED
+import java.time.*
 
 class NaggingCalendarView extends CalendarView{
 
@@ -27,6 +21,7 @@ class NaggingCalendarView extends CalendarView{
             DateControl control = param.getDateControl();
 
             VirtualGrid grid = control.getVirtualGrid();
+            println param.getZonedDateTime()
             ZonedDateTime time = param.getZonedDateTime();
             DayOfWeek firstDayOfWeek = getFirstDayOfWeek();
             ZonedDateTime lowerTime = grid.adjustTime(time, false, firstDayOfWeek);
@@ -38,37 +33,40 @@ class NaggingCalendarView extends CalendarView{
                 time = upperTime;
             }
 
-            Entry<Object> entry = new Entry<>(MessageFormat.format(Messages.getString("DateControl.DEFAULT_ENTRY_TITLE"), entryCounter++)); //$NON-NLS-1$
+            Entry deadline = new Entry(MessageFormat.format("New Deadline {0}", entryCounter++)); //$NON-NLS-1$
             Interval interval = new Interval(time.toLocalDateTime(), time.toLocalDateTime().plusHours(1));
-            entry.setInterval(interval);
+            deadline.setInterval(interval);
 
-            if (control instanceof AllDayView) {
-                entry.setFullDay(true);
-            }
+
+//            if (control instanceof AllDayView) {
+//                deadline.setFullDay(true);
+//            }
 
             Entry<Object> entry2 = new Entry<>(MessageFormat.format(Messages.getString("DateControl.DEFAULT_ENTRY_TITLE"), entryCounter++)); //$NON-NLS-1$
-            Interval interval2 = new Interval(time.toLocalDateTime(), time.toLocalDateTime().plusHours(1));
-            entry.setInterval(interval2);
-
-            if (control instanceof AllDayView) {
-                entry.setFullDay(true);
-            }
-
+            def bob = LocalDateTime.of(2018, Month.MARCH,9,0,0)
+            Interval interval2 = new Interval(bob, bob.plusHours(1));
+            entry2.setInterval(interval2);
+//
+//
+//            if (control instanceof AllDayView) {
+//                entry.setFullDay(true);
+//            }
+//
             events.add(entry2)
 
             new Alert(Alert.AlertType.INFORMATION).showAndWait()
 
 //            println events
-            addLastEvent()
+            addLastEntry()
 
-            return entry
+            return deadline
         }
     }
 
-    def addLastEvent(){
+    def addLastEntry(){
         def cal = calendars.first()
         cal.addEntry(events.last())
-        cal.fireEvent(new CalendarEvent(CALENDAR_CHANGED, cal))
+//        cal.fireEvent(new CalendarEvent(CALENDAR_CHANGED, cal))
     }
 
 
