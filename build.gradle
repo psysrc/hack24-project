@@ -9,7 +9,7 @@ repositories {
     mavenCentral()
 }
 
-mainClassName = "hello.HelloWorld"
+mainClassName = "nagg.NaggApp"
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.14'
