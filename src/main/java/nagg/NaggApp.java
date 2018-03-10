@@ -56,8 +56,8 @@ public class NaggApp extends Application {
             Scene scene = new Scene(calendarView);
             primaryStage.setTitle("Calendar");
             primaryStage.setScene(scene);
-            primaryStage.setWidth(1300);
-            primaryStage.setHeight(1000);
+//            primaryStage.setWidth(1300);
+//            primaryStage.setHeight(1000);
             primaryStage.centerOnScreen();
             primaryStage.show();
         }
