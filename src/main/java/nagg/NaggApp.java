@@ -1,7 +1,6 @@
 package nagg;
 
 import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.view.CalendarView;
 import javafx.application.Application;
@@ -17,11 +16,11 @@ public class NaggApp extends Application {
         @Override
         public void start(Stage primaryStage) throws Exception {
 
-            CalendarView calendarView = new CalendarView();
+            CalendarView calendarView = new NaggingCalendarView();
 
             Calendar cal = new Calendar("Schedule");
 
-            cal.setStyle(Style.STYLE2);
+            cal.setStyle(Calendar.Style.STYLE2);
 
             CalendarSource myCalendarSource = new CalendarSource("Calendars");
             myCalendarSource.getCalendars().addAll(cal);

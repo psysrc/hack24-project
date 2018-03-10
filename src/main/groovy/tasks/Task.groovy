@@ -8,3 +8,6 @@ class Task {
     Closure<BigDecimal> averageWorkHoursPerDay = { workHoursLeft/daysLeftUntilDeadline }
 
 }
+
+
+
