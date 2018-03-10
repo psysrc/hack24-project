@@ -9,7 +9,7 @@ repositories {
     mavenCentral()
 }
 
-mainClassName = "hello.HelloWorld"
+mainClassName = "nagg.NaggApp"
 
 sourceSets {
     main {
