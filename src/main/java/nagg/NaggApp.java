@@ -20,14 +20,12 @@ public class NaggApp extends Application {
 
             CalendarView calendarView = new CalendarView();
 
-                Calendar birthdays = new Calendar("Birthdays");
-                Calendar holidays = new Calendar("Holidays");
+                Calendar cal = new Calendar("Schedule");
 
-                birthdays.setStyle(Style.STYLE1);
-                holidays.setStyle(Style.STYLE2);
+                cal.setStyle(Style.STYLE2);
 
-                CalendarSource myCalendarSource = new CalendarSource("My Calendars");
-                myCalendarSource.getCalendars().addAll(birthdays, holidays);
+                CalendarSource myCalendarSource = new CalendarSource("Calendars");
+                myCalendarSource.getCalendars().addAll(cal);
 
                 calendarView.getCalendarSources().addAll(myCalendarSource);
 
