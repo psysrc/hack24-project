@@ -5,14 +5,11 @@ import com.calendarfx.model.CalendarSource;
 import com.calendarfx.view.CalendarView;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;   // REMOVE ME
-import javafx.event.Event;  // REMOVE ME
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import com.calendarfx.model.CalendarEvent;  // REMOVE ME
 
 public class NaggApp extends Application {
 
@@ -22,10 +19,6 @@ public class NaggApp extends Application {
             CalendarView calendarView = new NaggingCalendarView();
 
             Calendar cal = new Calendar("Schedule");
-
-            // REMOVE THE EVENT HANDLERS (DEBUG)
-            EventHandler<CalendarEvent> handle = evt -> foo(evt);
-            cal.addEventHandler(handle);
 
             cal.setStyle(Calendar.Style.STYLE2);
 
@@ -73,10 +66,5 @@ public class NaggApp extends Application {
 
         public static void main(String[] args) {
                 launch(args);
-        }
-
-        // REMOVE ME
-        private void foo(Event evt) {
-            System.out.println("Hey! I'm a new event handler!");
         }
 }
