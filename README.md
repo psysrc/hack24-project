@@ -8,17 +8,17 @@ In this project you get:
 
 * A Gradle build file
 * A standard project structure:
-
-    <proj>  
-      |  
-      +- src  
-          |  
-          +- main  
-          |     |  
-          |     +- groovy  
-          |  
-          +- test  
-          |   |  
-          |   +- groovy  
-  
-          |  
+```
+    proj
+      |
+      +- src
+          |
+          +- main
+          |     |
+          |     +- groovy
+          |
+          +- test
+          |   |
+          |   +- groovy
+          |
+```
