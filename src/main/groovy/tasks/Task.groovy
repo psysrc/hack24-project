@@ -15,7 +15,10 @@ class Task {
     int totalHours
     int workHoursLeft
 
-//    final Closure<Integer> daysUntilEnd = { ChronoUnit.DAYS.between(LocalDateTime.now(), endDate.getStartDate()) as int}
+//    final Closure<Integer> daysUntilEnd = {
+//        def z = Duration.between(LocalDateTime.now(),endDate.getStartAsLocalDateTime()).toDays()
+//        z = z<0?z:1
+//        return z as int}
 //    final Closure<Integer> averageWorkHoursPerDay = { Math.ceil(workHoursLeft / daysUntilEnd.call() as double) as int }
 
     Task(String name, Deadline endDate, int hours) {
@@ -25,6 +28,7 @@ class Task {
     }
 
     List<Entry> genEntries(){
+
         def thisMoment = LocalDateTime.now()
 
         Duration duration = Duration.between(thisMoment,endDate.getStartAsLocalDateTime())
