@@ -29,7 +29,7 @@ class NaggingCalendarView extends CalendarView{
 
     NaggingCalendarView() {
 
-        calendars.add(tc)
+//        calendars.add(tc)
 
         setEntryFactory{ param ->
 
@@ -105,7 +105,7 @@ class NaggingCalendarView extends CalendarView{
 
 
 //            println events
-            addLastEntry()
+//            addLastEntry()
 
             return deadline
         }
