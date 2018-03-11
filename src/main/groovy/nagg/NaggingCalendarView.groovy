@@ -18,6 +18,10 @@ class NaggingCalendarView extends CalendarView{
 
     NaggingCalendarView() {
         setEntryFactory{ param ->
+
+            // TODO: Add a dialog box here to get information about the new task to be added
+            // vbox, hbox, label, text field, button
+
             DateControl control = param.getDateControl();
 
             VirtualGrid grid = control.getVirtualGrid();
