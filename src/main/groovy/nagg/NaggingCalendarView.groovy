@@ -66,7 +66,7 @@ class NaggingCalendarView extends CalendarView{
             dialog.getDialogPane().setContent(gridPane);
 
             // Request focus on the name field by default.
-            Platform.runLater{ name.requestFocus()}
+            Platform.runLater{ name.requestFocus() }
 
             // Convert the result to a name-hours-pair when the OK button is clicked.
             dialog.setResultConverter {dialogButton ->
