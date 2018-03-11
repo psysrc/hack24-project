@@ -40,13 +40,14 @@ class Task {
 
         daysLeft.times {
             def when = thisMoment.plusDays(it)
-            Entry<Object> en = new Entry<>(MessageFormat.format("Work on {0}, for {1} hours, day #{2}", name, workLength, it+1));
-            Interval interval2 = new Interval(when, when.plusHours(20))
+            Entry<Object> en = new Entry<>(MessageFormat.format("Work on {0}, for {1} hours, day #{2}", name, workLength, it));
+            Interval interval2 = new Interval(when, when)
 
             en.setInterval(interval2)
             en.setFullDay(true)
 
             entries.add(en)
+//            println "added ${en}"
 
         }
 

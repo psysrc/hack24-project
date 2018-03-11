@@ -69,7 +69,7 @@ class NaggingCalendarView extends CalendarView{
     }
 
     def addLastTask(){
-        getCalendarSources().get(0).getCalendars().add(tasks.last())
+        getCalendarSources().first().getCalendars().add(tasks.last())
     }
 
     List<String> extractNaggs(){
