@@ -55,10 +55,10 @@ class NaggingCalendarView extends CalendarView{
             hours.setPromptText("Hours of Work");
 
             // Add text fields and labels to gridpane
-            // TODO: Add new label and fix positions of everything
-            gridPane.add(name, 0, 0);
-            gridPane.add(new Label("To:"), 1, 0);
-            gridPane.add(hours, 2, 0);
+            gridPane.add(new Label("Task Title: "), 0, 0);
+            gridPane.add(name, 1, 0);
+            gridPane.add(new Label("Hours of Work: "), 0, 1);
+            gridPane.add(hours, 1, 1);
 
             // Set the dialog box contents to that of the gridpane
             dialog.getDialogPane().setContent(gridPane);
