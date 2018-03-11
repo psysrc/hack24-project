@@ -34,7 +34,51 @@ class NaggingCalendarView extends CalendarView{
         setEntryFactory{ param ->
 
             // TODO: Add a dialog box here to get information about the new task to be added
-            // vbox, hbox, label, text field, button
+            def Dialog dialog = genTaskDialog()
+
+            // Show the dialog box
+            Optional<Pair<String, String>> result = dialog.showAndWait();
+
+            // If we return a good result, do stuff
+            result.ifPresent{pair ->
+                System.out.println("Name=" + pair.getKey() + ", Hours=" + pair.getValue());
+            };
+
+
+            DateControl control = param.getDateControl();
+
+            VirtualGrid grid = control.getVirtualGrid();
+            ZonedDateTime time = param.getZonedDateTime();
+            DayOfWeek firstDayOfWeek = getFirstDayOfWeek();
+            ZonedDateTime lowerTime = grid.adjustTime(time, false, firstDayOfWeek);
+            ZonedDateTime upperTime = grid.adjustTime(time, true, firstDayOfWeek);
+
+            if (Duration.between(time, lowerTime).abs().minus(Duration.between(time, upperTime).abs()).isNegative()) {
+                time = lowerTime;
+            } else {
+                time = upperTime;
+            }
+
+            Deadline deadline = new Deadline(MessageFormat.format("New Deadline {0}", entryCounter++)); //$NON-NLS-1$
+            Interval interval = new Interval(time.toLocalDateTime(), time.toLocalDateTime().plusHours(1));
+            deadline.setInterval(interval);
+
+
+//            println events
+//            addLastEntry()
+//          TODO: return null and generate new Calendar
+            return deadline
+        }
+    }
+
+    def addLastEntry(){
+        def cal = calendars.first()
+        cal.addEntry(events.last())
+//        cal.fireEvent(new CalendarEvent(CALENDAR_CHANGED, cal))
+    }
+
+    def genTaskDialog(){
+      // vbox, hbox, label, text field, button
 
             // Create the dialog box
             Dialog<Pair<String, Integer>> dialog = new Dialog<>();
@@ -75,46 +119,7 @@ class NaggingCalendarView extends CalendarView{
                 }
                 return null;
             };
-
-            // Show the dialog box
-            Optional<Pair<String, String>> result = dialog.showAndWait();
-
-            // If we return a good result, do stuff
-            result.ifPresent{pair ->
-                System.out.println("Name=" + pair.getKey() + ", Hours=" + pair.getValue());
-            };
-
-
-            DateControl control = param.getDateControl();
-
-            VirtualGrid grid = control.getVirtualGrid();
-            ZonedDateTime time = param.getZonedDateTime();
-            DayOfWeek firstDayOfWeek = getFirstDayOfWeek();
-            ZonedDateTime lowerTime = grid.adjustTime(time, false, firstDayOfWeek);
-            ZonedDateTime upperTime = grid.adjustTime(time, true, firstDayOfWeek);
-
-            if (Duration.between(time, lowerTime).abs().minus(Duration.between(time, upperTime).abs()).isNegative()) {
-                time = lowerTime;
-            } else {
-                time = upperTime;
-            }
-
-            Deadline deadline = new Deadline(MessageFormat.format("New Deadline {0}", entryCounter++)); //$NON-NLS-1$
-            Interval interval = new Interval(time.toLocalDateTime(), time.toLocalDateTime().plusHours(1));
-            deadline.setInterval(interval);
-
-
-//            println events
-//            addLastEntry()
-
-            return deadline
-        }
-    }
-
-    def addLastEntry(){
-        def cal = calendars.first()
-        cal.addEntry(events.last())
-//        cal.fireEvent(new CalendarEvent(CALENDAR_CHANGED, cal))
+            return dialog
     }
 
 
