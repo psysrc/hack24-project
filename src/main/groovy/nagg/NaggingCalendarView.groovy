@@ -28,7 +28,6 @@ class NaggingCalendarView extends CalendarView{
 
         setEntryFactory{ param ->
 
-            // TODO: Add a dialog box here to get information about the new task to be added
             Dialog dialog = genTaskDialog()
 
             // Show the dialog box
@@ -81,7 +80,6 @@ class NaggingCalendarView extends CalendarView{
     }
 
     private static Dialog<Pair<String,Integer>> genTaskDialog(){
-        // vbox, hbox, label, text field, button
 
         // Create the dialog box
         Dialog<Pair<String, Integer>> dialog = new Dialog<>();
@@ -126,7 +124,4 @@ class NaggingCalendarView extends CalendarView{
 
         return dialog
     }
-
-
-
 }
