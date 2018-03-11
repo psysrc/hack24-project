@@ -2,14 +2,18 @@ package nagg;
 
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
-import com.calendarfx.view.CalendarView;
-import com.calendarfx.view.popover.EntryPopOverContentPane;
 import gui.WorkInputEntryDialog;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -18,7 +22,7 @@ public class NaggApp extends Application {
         @Override
         public void start(Stage primaryStage) throws Exception {
 
-            CalendarView calendarView = new NaggingCalendarView();
+            NaggingCalendarView calendarView = new NaggingCalendarView();
 
             // TODO: Add a new popover to calendarView
             // Line below adds the default popover thing. Don't know how. But it works.
@@ -64,9 +68,42 @@ public class NaggApp extends Application {
             updateTimeThread.setDaemon(true);
             updateTimeThread.start();
 
-            Scene scene = new Scene(calendarView);
+            MenuBar mb = new MenuBar();
+            Menu mFile = new Menu("File");
+            MenuItem saveButton = new MenuItem("Save");
+            MenuItem loadButton = new MenuItem("Load");
+
+            saveButton.setOnAction(e -> {
+                FileChooser fc = new FileChooser();
+                fc.setTitle("Open Resource File");
+                File selectedFile = fc.showOpenDialog(primaryStage);
+                if (selectedFile != null){
+                    calendarView.save(selectedFile);
+                }
+            });
+
+            loadButton.setOnAction(e -> {
+                FileChooser fc = new FileChooser();
+                fc.setTitle("Open Resource File");
+                File selectedFile = fc.showOpenDialog(primaryStage);
+                if (selectedFile != null){
+                    calendarView.load(selectedFile);
+                }
+            });
+
+
+            mFile.getItems().add(saveButton);
+            mFile.getItems().add(loadButton);
+            mb.getMenus().add(mFile);
+
+            BorderPane bp = new BorderPane();
+            bp.setCenter(calendarView);
+            bp.setTop(mb);
+
+            Scene scene = new Scene(bp);
             primaryStage.setTitle("Calendar");
             primaryStage.setScene(scene);
+
 
 //            primaryStage.setWidth(1300);
 //            primaryStage.setHeight(1000);
