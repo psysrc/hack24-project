@@ -59,8 +59,9 @@ class NaggingCalendarView extends CalendarView{
 
 //                println deadline.getEnd
 
-                tasks.add(new TaskCalendar(new Task(pair.key,deadline,pair.value as int)))
+                tasks.add(new TaskCalendar(pair.key, new Task(pair.key,deadline,pair.value as int)))
                 tasks.last().updateEntries()
+                addLastEntry()
             };
 
 
@@ -72,8 +73,10 @@ class NaggingCalendarView extends CalendarView{
     }
 
     def addLastEntry(){
-        def cal = calendars.first()
-        cal.addEntry(events.last())
+//        def cal = calendars.first()
+        getCalendarSources().get(0).getCalendars().add(tasks.last())
+//        getCalendars().add(tasks.last())
+//        calendars.add(tasks.last())
 //        cal.fireEvent(new CalendarEvent(CALENDAR_CHANGED, cal))
     }
 
@@ -101,10 +104,11 @@ class NaggingCalendarView extends CalendarView{
         hours.setPromptText("Hours of Work");
 
         // Add text fields and labels to gridpane
-        gridPane.add(new Label("Task Title: "), 0, 0);
-        gridPane.add(name, 1, 0);
-        gridPane.add(new Label("Hours of Work: "), 0, 1);
-        gridPane.add(hours, 1, 1);
+        def dial = gridPane.&add
+        dial new Label("Task Title: "), 0, 0
+        dial name, 1, 0
+        dial new Label("Hours of Work: "), 0, 1
+        dial hours, 1, 1
 
         // Set the dialog box contents to that of the gridpane
         dialog.getDialogPane().setContent(gridPane);

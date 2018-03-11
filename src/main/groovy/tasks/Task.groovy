@@ -30,13 +30,13 @@ class Task {
         Duration duration = Duration.between(thisMoment,endDate.getStartAsLocalDateTime())
         int daysLeft = duration.toDays() as int
         daysLeft = daysLeft>0 ? daysLeft : 1
-        int noEntries = Math.ceil(workHoursLeft / daysLeft as double) as int
+        int workLength = Math.ceil(workHoursLeft / daysLeft as double) as int
 
         List<Entry> entries = new ArrayList<>()
 
-        noEntries.times {
-            Entry<Object> en = new Entry<>(MessageFormat.format("Work on {0}, day {1}", name, it));
+        daysLeft.times {
             def when = thisMoment.plusDays(it)
+            Entry<Object> en = new Entry<>(MessageFormat.format("Work on {0}, for {1} hours, day #{2}", name, workLength, it+1));
             Interval interval2 = new Interval(when, when.plusHours(20))
 
             en.setInterval(interval2)
