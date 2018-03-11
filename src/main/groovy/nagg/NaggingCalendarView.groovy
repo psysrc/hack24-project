@@ -59,7 +59,7 @@ class NaggingCalendarView extends CalendarView{
                 tasks.last().updateEntries()
                 addLastTask()
 
-//                println aggregateNagg()
+                println aggregateNagg()
 
             };
 
@@ -72,13 +72,12 @@ class NaggingCalendarView extends CalendarView{
         getCalendarSources().first().getCalendars().add(tasks.last())
     }
 
-    List<String> extractNaggs(){
-        tasks.parallelStream().map{"On ${it.task.name}, for ${it.task.averageWorkHoursPerDay.call()} hours, \n"} as List<String>
+    String extractNaggs(){
+        def z = tasks.parallelStream().map{"On ${it.task.name}, for ${it.task.averageWorkHoursPerDay.call()} hours"} as List
+        z.join (", \n")
     }
 
     String aggregateNagg(){
-        """Today, we are working on:
-            ${extractNaggs()}
-           Better get going! """
+        "Today, we are working on:\n${extractNaggs()}\nBetter get going! "
     }
 }
