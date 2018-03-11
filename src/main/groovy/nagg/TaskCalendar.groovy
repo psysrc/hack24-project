@@ -31,8 +31,4 @@ class TaskCalendar extends Calendar {
         addSteps()
     }
 
-    @Override
-    List<Entry<?>> findEntries(String searchText) {
-        return super.findEntries(searchText)
-    }
 }

@@ -5,8 +5,8 @@ import com.calendarfx.model.Interval
 import nagg.Deadline
 
 import java.text.MessageFormat
+import java.time.Duration
 import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 
 class Task {
 
@@ -15,8 +15,8 @@ class Task {
     int totalHours
     int workHoursLeft
 
-    final Closure<Long> daysUntilEnd = { ChronoUnit.DAYS.between(LocalDateTime.now(), endDate.getStartDate()) }
-    final Closure<Integer> averageWorkHoursPerDay = { (int)Math.ceil(workHoursLeft / daysUntilEnd.call() as double) }
+//    final Closure<Integer> daysUntilEnd = { ChronoUnit.DAYS.between(LocalDateTime.now(), endDate.getStartDate()) as int}
+//    final Closure<Integer> averageWorkHoursPerDay = { Math.ceil(workHoursLeft / daysUntilEnd.call() as double) as int }
 
     Task(String name, Deadline endDate, int hours) {
         this.name = name
@@ -25,12 +25,18 @@ class Task {
     }
 
     List<Entry> genEntries(){
-        int noEntries = averageWorkHoursPerDay.call()
+        def thisMoment = LocalDateTime.now()
+
+        Duration duration = Duration.between(thisMoment,endDate.getStartAsLocalDateTime())
+        int daysLeft = duration.toDays() as int
+        daysLeft = daysLeft>0 ? daysLeft : 1
+        int noEntries = Math.ceil(workHoursLeft / daysLeft as double) as int
+
         List<Entry> entries = new ArrayList<>()
 
         noEntries.times {
             Entry<Object> en = new Entry<>(MessageFormat.format("Work on {0}, day {1}", name, it));
-            def when = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(it)
+            def when = thisMoment.plusDays(it)
             Interval interval2 = new Interval(when, when.plusHours(20))
 
             en.setInterval(interval2)

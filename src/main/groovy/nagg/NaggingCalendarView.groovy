@@ -1,6 +1,5 @@
 package nagg
 
-import com.calendarfx.model.Entry
 import com.calendarfx.model.Interval
 import com.calendarfx.view.CalendarView
 import com.calendarfx.view.DateControl
@@ -8,13 +7,10 @@ import com.calendarfx.view.VirtualGrid
 import impl.com.calendarfx.view.NumericTextField
 import javafx.application.Platform
 import javafx.geometry.Insets
-import javafx.scene.control.ButtonBar
-import javafx.scene.control.ButtonType
-import javafx.scene.control.Dialog
-import javafx.scene.control.Label
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.layout.GridPane
 import javafx.util.Pair
+import tasks.Task
 
 import java.text.MessageFormat
 import java.time.DayOfWeek
@@ -24,8 +20,7 @@ import java.time.ZonedDateTime
 class NaggingCalendarView extends CalendarView{
 
     int entryCounter = 1
-    List<Entry> events = new ArrayList<Entry>()
-    TaskCalendar tc = new TaskCalendar()
+    List<TaskCalendar> tasks = new ArrayList<TaskCalendar>()
 
     NaggingCalendarView() {
 
@@ -37,31 +32,36 @@ class NaggingCalendarView extends CalendarView{
             Dialog dialog = genTaskDialog()
 
             // Show the dialog box
-            Optional<Pair<String, String>> result = dialog.showAndWait();
+            Optional<Pair<String, Integer>> result = dialog.showAndWait();
 
             // If we return a good result, do stuff
-            result.ifPresent{pair ->
+            result.ifPresent{ Pair <String, Integer> pair ->
                 System.out.println("Name=" + pair.getKey() + ", Hours=" + pair.getValue());
+
+
+                DateControl control = param.getDateControl();
+
+                VirtualGrid grid = control.getVirtualGrid();
+                ZonedDateTime time = param.getZonedDateTime();
+                DayOfWeek firstDayOfWeek = getFirstDayOfWeek();
+                ZonedDateTime lowerTime = grid.adjustTime(time, false, firstDayOfWeek);
+                ZonedDateTime upperTime = grid.adjustTime(time, true, firstDayOfWeek);
+
+                if (Duration.between(time, lowerTime).abs().minus(Duration.between(time, upperTime).abs()).isNegative()) {
+                    time = lowerTime;
+                } else {
+                    time = upperTime;
+                }
+
+                Deadline deadline = new Deadline(MessageFormat.format("New Deadline {0}", entryCounter++)); //$NON-NLS-1$
+                Interval interval = new Interval(time.toLocalDateTime(), time.toLocalDateTime().plusHours(1));
+                deadline.setInterval(interval);
+
+//                println deadline.getEnd
+
+                tasks.add(new TaskCalendar(new Task(pair.key,deadline,pair.value as int)))
+                tasks.last().updateEntries()
             };
-
-
-            DateControl control = param.getDateControl();
-
-            VirtualGrid grid = control.getVirtualGrid();
-            ZonedDateTime time = param.getZonedDateTime();
-            DayOfWeek firstDayOfWeek = getFirstDayOfWeek();
-            ZonedDateTime lowerTime = grid.adjustTime(time, false, firstDayOfWeek);
-            ZonedDateTime upperTime = grid.adjustTime(time, true, firstDayOfWeek);
-
-            if (Duration.between(time, lowerTime).abs().minus(Duration.between(time, upperTime).abs()).isNegative()) {
-                time = lowerTime;
-            } else {
-                time = upperTime;
-            }
-
-            Deadline deadline = new Deadline(MessageFormat.format("New Deadline {0}", entryCounter++)); //$NON-NLS-1$
-            Interval interval = new Interval(time.toLocalDateTime(), time.toLocalDateTime().plusHours(1));
-            deadline.setInterval(interval);
 
 
 //            println events
