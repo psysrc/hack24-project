@@ -54,10 +54,11 @@ class NaggingCalendarView extends CalendarView{
                 Interval interval = new Interval(time.toLocalDateTime(), time.toLocalDateTime().plusHours(1));
                 deadline.setInterval(interval);
 
+                createTaskCalendar(new Task(pair.key,deadline,pair.value as int))
 
-                tasks.add(new TaskCalendar(pair.key, new Task(pair.key,deadline,pair.value as int)))
-                tasks.last().updateEntries()
-                addLastTask()
+//                tasks.add(new TaskCalendar(pair.key, new Task(pair.key,deadline,pair.value as int)))
+//                tasks.last().updateEntries()
+//                addLastTask()
 
                 println aggregateNagg()
 
@@ -66,6 +67,12 @@ class NaggingCalendarView extends CalendarView{
 
             return null
         }
+    }
+
+    def createTaskCalendar (Task task){
+        tasks.add(new TaskCalendar(task.name,task))
+        tasks.last().updateEntries()
+        addLastTask()
     }
 
     def addLastTask(){
@@ -79,5 +86,31 @@ class NaggingCalendarView extends CalendarView{
 
     String aggregateNagg(){
         "Today, we are working on:\n${extractNaggs()}\nBetter get going! "
+    }
+
+
+    void save(File fileDescriptor){
+        FileOutputStream fout = new FileOutputStream(fileDescriptor)
+        ObjectOutputStream oout = new ObjectOutputStream(fout)
+
+        tasks.each {
+            oout.writeObject(it)
+        }
+
+        oout.close()
+        fout.close()
+    }
+
+    void load(File fileDescriptor){
+        FileInputStream fin = new FileInputStream(fileDescriptor)
+        ObjectInputStream oin = new ObjectInputStream(fin)
+
+        Object temp;
+        while(temp = oin.readObject()){
+            createTaskCalendar(temp as Task)
+        }
+
+        oin.close()
+        fin.close()
     }
 }

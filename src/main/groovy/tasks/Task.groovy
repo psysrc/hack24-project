@@ -8,7 +8,7 @@ import java.text.MessageFormat
 import java.time.Duration
 import java.time.LocalDateTime
 
-class Task {
+class Task implements Serializable{
 
     String name
     Deadline endDate
