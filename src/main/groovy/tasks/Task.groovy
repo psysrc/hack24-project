@@ -29,10 +29,11 @@ class Task {
         List<Entry> entries = new ArrayList<>()
 
         noEntries.times {
-            Entry<Object> en = new Entry<>(MessageFormat.format("Work on {0}", name)); //$NON-NLS-1$
+            Entry<Object> en = new Entry<>(MessageFormat.format("Work on {0}, day {1}", name, it));
             def when = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(it)
             Interval interval2 = new Interval(when, when.plusHours(20))
 
+            en.setInterval(interval2)
             en.setFullDay(true)
 
             entries.add(en)
