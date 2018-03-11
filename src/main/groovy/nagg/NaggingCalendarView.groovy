@@ -8,13 +8,11 @@ import com.calendarfx.view.VirtualGrid
 import impl.com.calendarfx.view.NumericTextField
 import javafx.application.Platform
 import javafx.geometry.Insets
-import javafx.scene.control.Alert
 import javafx.scene.control.ButtonBar
 import javafx.scene.control.ButtonType
 import javafx.scene.control.Dialog
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import javafx.scene.control.TextInputDialog
 import javafx.scene.layout.GridPane
 import javafx.util.Pair
 
@@ -27,8 +25,12 @@ class NaggingCalendarView extends CalendarView{
 
     int entryCounter = 1
     List<Entry> events = new ArrayList<Entry>()
+    TaskCalendar tc = new TaskCalendar()
 
     NaggingCalendarView() {
+
+//        calendars.add(tc)
+
         setEntryFactory{ param ->
 
             // TODO: Add a dialog box here to get information about the new task to be added
@@ -86,7 +88,6 @@ class NaggingCalendarView extends CalendarView{
             DateControl control = param.getDateControl();
 
             VirtualGrid grid = control.getVirtualGrid();
-            println param.getZonedDateTime()
             ZonedDateTime time = param.getZonedDateTime();
             DayOfWeek firstDayOfWeek = getFirstDayOfWeek();
             ZonedDateTime lowerTime = grid.adjustTime(time, false, firstDayOfWeek);
@@ -103,25 +104,8 @@ class NaggingCalendarView extends CalendarView{
             deadline.setInterval(interval);
 
 
-
-//            if (control instanceof AllDayView) {
-//                deadline.setFullDay(true);
-//            }
-
-//            Entry<Object> entry2 = new Entry<>(MessageFormat.format(Messages.getString("DateControl.DEFAULT_ENTRY_TITLE"), entryCounter++)); //$NON-NLS-1$
-//            def bob = LocalDateTime.of(2018, Month.MARCH,9,0,0)
-//            Interval interval2 = new Interval(bob, bob.plusHours(1));
-//            entry2.setInterval(interval2);
-//
-//
-//            if (control instanceof AllDayView) {
-//                entry.setFullDay(true);
-//            }
-//
-//            events.add(entry2)
-
 //            println events
-            addLastEntry()
+//            addLastEntry()
 
             return deadline
         }
