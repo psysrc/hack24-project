@@ -3,6 +3,8 @@ package nagg;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.view.CalendarView;
+import com.calendarfx.view.popover.EntryPopOverContentPane;
+import gui.WorkInputEntryDialog;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -20,8 +22,12 @@ public class NaggApp extends Application {
 
             // TODO: Add a new popover to calendarView
             // Line below adds the default popover thing. Don't know how. But it works.
-            //calendarView.setEntryDetailsPopOverContentCallback(param -> new EntryPopOverContentPane(param.getPopOver(), param.getDateControl(), param.getEntry()));
-            //calendarView.setEntryDetailsCallback(param -> new WorkInputEntryDialog(param.getPopOver(), param.getDateControl(), param.getEntry())));
+//            calendarView.setEntryDetailsPopOverContentCallback(param -> new EntryPopOverContentPane(param.getPopOver(), param.getDateControl(), param.getEntry()));
+            calendarView.setEntryDetailsCallback(param -> {
+                WorkInputEntryDialog.MakeDialog(param.getDateControl(), param.getEntry()).showAndWait();
+                return true;
+            });
+//            calendarView.setEntryDetailsCallback(param -> {return true;});
 
             Calendar cal = new Calendar("Schedule");
 

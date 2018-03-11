@@ -14,7 +14,6 @@ import javafx.util.Pair
 class DialogGen {
 
     static Dialog<Pair<String, Integer>> genTaskDialog(){
-        // vbox, hbox, label, text field, button
 
         // Create the dialog box
         Dialog<Pair<String, Integer>> dialog = new Dialog<>();
