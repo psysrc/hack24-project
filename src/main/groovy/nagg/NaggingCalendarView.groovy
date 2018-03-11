@@ -81,8 +81,4 @@ class NaggingCalendarView extends CalendarView{
             ${extractNaggs()}
            Better get going! """
     }
-
-
-
-
 }
