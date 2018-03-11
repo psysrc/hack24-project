@@ -78,48 +78,49 @@ class NaggingCalendarView extends CalendarView{
     }
 
     private static Dialog<Pair<String,Integer>> genTaskDialog(){
-      // vbox, hbox, label, text field, button
+        // vbox, hbox, label, text field, button
 
-            // Create the dialog box
-            Dialog<Pair<String, Integer>> dialog = new Dialog<>();
-            dialog.setTitle("Task Input");
+        // Create the dialog box
+        Dialog<Pair<String, Integer>> dialog = new Dialog<>();
+        dialog.setTitle("Task Input");
 
-            // Add the buttons
-            ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().addAll(ok, ButtonType.CANCEL);
+        // Add the buttons
+        ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(ok, ButtonType.CANCEL);
 
-            // Set up a new gridpane
-            GridPane gridPane = new GridPane();
-            gridPane.setHgap(10);
-            gridPane.setVgap(10);
-            gridPane.setPadding(new Insets(20, 150, 10, 10));
+        // Set up a new gridpane
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(20, 150, 10, 10));
 
-            // Set up new text fields
-            TextField name = new TextField();
-            name.setPromptText("Title");
-            NumericTextField hours = new NumericTextField();
-            hours.setPromptText("Hours of Work");
+        // Set up new text fields
+        TextField name = new TextField();
+        name.setPromptText("Title");
+        NumericTextField hours = new NumericTextField();
+        hours.setPromptText("Hours of Work");
 
-            // Add text fields and labels to gridpane
-            gridPane.add(new Label("Task Title: "), 0, 0);
-            gridPane.add(name, 1, 0);
-            gridPane.add(new Label("Hours of Work: "), 0, 1);
-            gridPane.add(hours, 1, 1);
+        // Add text fields and labels to gridpane
+        gridPane.add(new Label("Task Title: "), 0, 0);
+        gridPane.add(name, 1, 0);
+        gridPane.add(new Label("Hours of Work: "), 0, 1);
+        gridPane.add(hours, 1, 1);
 
-            // Set the dialog box contents to that of the gridpane
-            dialog.getDialogPane().setContent(gridPane);
+        // Set the dialog box contents to that of the gridpane
+        dialog.getDialogPane().setContent(gridPane);
 
-            // Request focus on the name field by default.
-            Platform.runLater{ name.requestFocus()}
+        // Request focus on the name field by default.
+        Platform.runLater{ name.requestFocus()}
 
-            // Convert the result to a name-hours-pair when the OK button is clicked.
-            dialog.setResultConverter {dialogButton ->
-                if (dialogButton == ok) {
-                    return new Pair<>(name.getText(), hours.getText());
-                }
-                return null;
-            };
-            return dialog
+        // Convert the result to a name-hours-pair when the OK button is clicked.
+        dialog.setResultConverter {dialogButton ->
+            if (dialogButton == ok) {
+                return new Pair<>(name.getText(), hours.getText());
+            }
+            return null;
+        };
+
+        return dialog
     }
 
 
