@@ -4,11 +4,7 @@ import com.calendarfx.model.Interval
 import com.calendarfx.view.CalendarView
 import com.calendarfx.view.DateControl
 import com.calendarfx.view.VirtualGrid
-import impl.com.calendarfx.view.NumericTextField
-import javafx.application.Platform
-import javafx.geometry.Insets
-import javafx.scene.control.*
-import javafx.scene.layout.GridPane
+import javafx.scene.control.Dialog
 import javafx.util.Pair
 import tasks.Task
 
@@ -16,6 +12,8 @@ import java.text.MessageFormat
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.ZonedDateTime
+
+import static gui.DialogGen.genTaskDialog
 
 class NaggingCalendarView extends CalendarView{
 
@@ -56,72 +54,31 @@ class NaggingCalendarView extends CalendarView{
                 Interval interval = new Interval(time.toLocalDateTime(), time.toLocalDateTime().plusHours(1));
                 deadline.setInterval(interval);
 
-//                println deadline.getEnd
 
                 tasks.add(new TaskCalendar(pair.key, new Task(pair.key,deadline,pair.value as int)))
                 tasks.last().updateEntries()
-                addLastEntry()
+                addLastTask()
+
+//                println aggregateNagg()
+
             };
 
 
-//            println events
-//            addLastEntry()
-//          TODO: return null and generate new Calendar
             return null
         }
     }
 
-    def addLastEntry(){
-//        def cal = calendars.first()
+    def addLastTask(){
         getCalendarSources().get(0).getCalendars().add(tasks.last())
-//        getCalendars().add(tasks.last())
-//        calendars.add(tasks.last())
-//        cal.fireEvent(new CalendarEvent(CALENDAR_CHANGED, cal))
     }
 
-    private static Dialog<Pair<String,Integer>> genTaskDialog(){
+    List<String> extractNaggs(){
+        tasks.parallelStream().map{"On ${it.task.name}, for ${it.task.averageWorkHoursPerDay.call()} hours, \n"} as List<String>
+    }
 
-        // Create the dialog box
-        Dialog<Pair<String, Integer>> dialog = new Dialog<>();
-        dialog.setTitle("Task Input");
-
-        // Add the buttons
-        ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(ok, ButtonType.CANCEL);
-
-        // Set up a new gridpane
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(20, 150, 10, 10));
-
-        // Set up new text fields
-        TextField name = new TextField();
-        name.setPromptText("Title");
-        NumericTextField hours = new NumericTextField();
-        hours.setPromptText("Hours of Work");
-
-        // Add text fields and labels to gridpane
-        def dial = gridPane.&add
-        dial new Label("Task Title: "), 0, 0
-        dial name, 1, 0
-        dial new Label("Hours of Work: "), 0, 1
-        dial hours, 1, 1
-
-        // Set the dialog box contents to that of the gridpane
-        dialog.getDialogPane().setContent(gridPane);
-
-        // Request focus on the name field by default.
-        Platform.runLater{ name.requestFocus()}
-
-        // Convert the result to a name-hours-pair when the OK button is clicked.
-        dialog.setResultConverter {dialogButton ->
-            if (dialogButton == ok) {
-                return new Pair<>(name.getText(), hours.getText());
-            }
-            return null;
-        };
-
-        return dialog
+    String aggregateNagg(){
+        """Today, we are working on:
+            ${extractNaggs()}
+           Better get going! """
     }
 }
