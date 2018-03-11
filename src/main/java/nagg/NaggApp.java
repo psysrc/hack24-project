@@ -18,6 +18,11 @@ public class NaggApp extends Application {
 
             CalendarView calendarView = new NaggingCalendarView();
 
+            // TODO: Add a new popover to calendarView
+            // Line below adds the default popover thing. Don't know how. But it works.
+            //calendarView.setEntryDetailsPopOverContentCallback(param -> new EntryPopOverContentPane(param.getPopOver(), param.getDateControl(), param.getEntry()));
+            //calendarView.setEntryDetailsCallback(param -> new WorkInputEntryDialog(param.getPopOver(), param.getDateControl(), param.getEntry())));
+
             Calendar cal = new Calendar("Schedule");
 
             cal.setStyle(Calendar.Style.STYLE2);
